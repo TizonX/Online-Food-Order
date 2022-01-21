@@ -10,7 +10,7 @@ function Header() {
           <HeaderCartButton/>
       </header>
       <div className={classes['main-image']}>
-        <img src={mealsImage} alt="food-image" />
+        <img src={mealsImage} alt="table-food" />
       </div>
     </>
   );
