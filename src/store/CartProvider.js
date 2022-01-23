@@ -22,20 +22,42 @@ const cartReducer = (state, action) => {
     // validating item     ↓↓↓
     if (existingCartItem) {
       // item details will same but amout will change when same item added multiple time
-     const updatedItem = {
+      const updatedItem = {
         ...existingCartItem,
         // ↓↓↓
         amount: existingCartItem.amount + action.item.amount,
+        
       };
       // new array with old item's
       updatedItems = [...state.items];
       // updated item set with new amount
       updatedItems[existingCartItemIndex] = updatedItem;
     } else {
-       updatedItems = state.items.concat(action.item);
+      updatedItems = state.items.concat(action.item);
     }
 
     //   ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑  END  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    };
+  }
+
+  if (action.type === "REMOVE") {
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+    const existingItem = state.items[existingCartItemIndex];
+    const updatedTotalAmount = state.totalAmount - existingItem.price;
+    let updatedItems;
+
+    if (existingItem.amount === 1) {
+      updatedItems = state.items.filter((item) => item.id !== action.id);
+    } else {
+      const updateItem = { ...existingItem, amount: existingItem.amount - 1 };
+      updatedItems = [...state.items];
+      updatedItems[existingCartItemIndex] = updateItem;
+    }
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,

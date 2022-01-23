@@ -10,9 +10,14 @@ const Cart = (props) => {
   // if item available true else false
   const hasItems = cartCtx.items.length > 0;
   //
-  const cartItemRemoveHandler = (id) => {};
+  const cartItemRemoveHandler = (id) => {
+    cartCtx.removeItem(id);
+  };
 
-  const cartItemAddHandler = (item) => {};
+  const cartItemAddHandler = (item) => {
+    // when click on order item button, it will add item
+    cartCtx.addItem(item);
+  };
   return (
     <Modal onHideCart={props.onHideCart}>
       <ul className={classes["cart-items"]}>
