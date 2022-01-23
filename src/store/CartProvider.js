@@ -7,10 +7,36 @@ const defaultCartState = {
 };
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    const updatedItems = state.items.concat(action.item);
     const updatedTotalAmount =
       state.totalAmount + action.item.price * action.item.amount;
-    return { 
+    // ↓↓↓↓↓↓        if item already added into the cart            ↓↓↓↓↓↓
+
+    // if item already available, getting its index, ↓↓↓
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.item.id
+    );
+    // detail of that Item, like name, price etc. ↓↓↓↓
+    const existingCartItem = state.items[existingCartItemIndex];
+
+    let updatedItems;
+    // validating item     ↓↓↓
+    if (existingCartItem) {
+      // item details will same but amout will change when same item added multiple time
+     const updatedItem = {
+        ...existingCartItem,
+        // ↓↓↓
+        amount: existingCartItem.amount + action.item.amount,
+      };
+      // new array with old item's
+      updatedItems = [...state.items];
+      // updated item set with new amount
+      updatedItems[existingCartItemIndex] = updatedItem;
+    } else {
+       updatedItems = state.items.concat(action.item);
+    }
+
+    //   ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑  END  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+    return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
     };
