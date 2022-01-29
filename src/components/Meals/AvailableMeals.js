@@ -31,6 +31,7 @@ const DUMMY_MEALS = [
 
 function AvailableMeals() {
   const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchMeals = async () => {
       const response = await fetch(
@@ -48,23 +49,28 @@ function AvailableMeals() {
         });
       }
       setMeals(loadedMeals);
+      setIsLoading(false);
     };
     fetchMeals();
   }, []);
   return (
     <section className={classes.meals}>
       <Card>
-        <ul>
-          {meals.map((meal) => (
-            <MealItem
-              id={meal.id}
-              key={meal.id}
-              name={meal.name}
-              description={meal.description}
-              price={meal.price}
-            />
-          ))}
-        </ul>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul>
+            {meals.map((meal) => (
+              <MealItem
+                id={meal.id}
+                key={meal.id}
+                name={meal.name}
+                description={meal.description}
+                price={meal.price}
+              />
+            ))}
+          </ul>
+        )}
       </Card>
     </section>
   );
