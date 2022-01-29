@@ -3,7 +3,7 @@ import classes from "./Checkout.module.css";
 
 // helper functions
 const isEmpty = (value) => value.trim() === "";
-const isFiveChars = (value) => value.trim().length === 5;
+const isFiveChars = (value) => value.trim().length === 6;
 
 const Checkout = (props) => {
   const [formInputsValid, setFormInputsValid] = useState({
@@ -44,9 +44,16 @@ const Checkout = (props) => {
       enteredCityIsValid &&
       enteredPostalCodeIsValid;
 
-    if (formIsValid) {
-      // submit cart form data
+    if (!formIsValid) {
+      return;
     }
+    // submit cart form data
+    props.submitOrderHandler({
+      name: enteredName,
+      street: enteredStreet,
+      postalCode: enteredPostalCode,
+      city: enteredCity,
+    });
   };
 
   return (
